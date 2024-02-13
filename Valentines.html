@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Valentines Day!</title>
+    <link rel="icon" href="./images.png" type="image/x-icon">
+    <style>
+      #loader {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white;
+        /* opacity: 50%; */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999999;
+      }
+      html,
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+      * {
+        margin: 0;
+        overflow: hidden;
+      }
+      #canvas {
+        width: 100%;
+        height: 100%;
+      }
+
+      svg {
+        overflow: visible;
+      }
+      svg path#line {
+        fill: none;
+        stroke: #e00000;
+        stroke-width: 2;
+        stroke-linecap: butt;
+        stroke-linejoin: round;
+        stroke-miterlimit: 4;
+        stroke-dasharray: none;
+        stroke-opacity: 1;
+        stroke-dasharray: 1;
+        stroke-dashoffset: 1;
+        animation: dash 4s linear infinite;
+      }
+      svg path#heart {
+        transform-origin: 50% 50%;
+        animation: blink 4s linear infinite;
+      }
+
+      @keyframes dash {
+        0% {
+          stroke-dashoffset: 1;
+        }
+        80% {
+          stroke-dashoffset: 0;
+        }
+        100% {
+          stroke-dashoffset: 0;
+        }
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        60% {
+          opacity: 0;
+          transform: scale(0);
+        }
+        70% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+        75% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        80% {
+          opacity: 1;
+          transform: scale(1.2);
+        }
+        85% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(1);
+        }
+      }
+
+      /* Styles for the pop-up message */
+      #popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        z-index: 999999;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        color: #fdfdfd;
+        max-width: 80%;
+        opacity: 0;
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+
+      #popup.show-popup {
+        display: block;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+
+      /* Typing animation for the heading */
+      #popup h2::after {
+        content: "|";
+        display: inline-block;
+        vertical-align: middle;
+        animation: blink 0.75s infinite;
+        margin-left: 5px;
+      }
+
+      /* Typing animation for the paragraph */
+      #popup p::after {
+        content: "|";
+        display: inline-block;
+        vertical-align: middle;
+        animation: blink 0.75s infinite;
+        margin-left: 5px;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!--Loading Page-->
+    <div id="loader">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        id="svg5"
+        version="1.1"
+        viewBox="0 0 502.98 108.61"
+      >
+        <path
+          id="heart"
+          d="M213.35 29.43c19.41-15.19 33.68 10.86 37.73 18.82-.28-13.61 11.64-40.98 25.94-34.01 32.3 15.74-15.88 83.8-26.4 81.76-13.24-9-51.35-53.3-37.27-66.57Z"
+          style="
+            fill: #ff9999;
+            stroke: #ff9999;
+            stroke-width: 1.5;
+            stroke-linecap: butt;
+            stroke-linejoin: miter;
+            stroke-miterlimit: 4;
+            stroke-dasharray: none;
+            stroke-opacity: 1;
+          "
+        />
+        <path
+          pathLength="1"
+          id="line"
+          d="M5.32 78.13c.96-.01 5-8.5 5.54-8.54.58-.05 6.1 8.51 7.1 8.51 3.66 0 9.29.06 10.71.05 2.53-.01 4.82-72.88 4.82-72.88l4.76 97.28 3.97-24.45 20.45-.22C64 77.86 77.1 63.66 78.36 63.8c1.31.15 6.68 14.08 7.94 14.07 2.3-.03 33.32.04 35.76.02.96 0 5-8.5 5.53-8.53.59-.05 6.1 8.51 7.1 8.5 3.66 0 9.3.07 10.72.06 2.53-.02 4.81-72.89 4.81-72.89l4.77 97.28 3.97-24.44s83.34-3.33 74.69 7.67c-8.65 11-45.3-42.94-31.65-53.58 25.6-19.96 49.96 36.94 40.26 36.5-12.2-.53 1.8-62.32 23.41-51.7 32.24 15.86-17.56 84.92-26.4 81.77-5.73-2.05-.68-21.68 31.4-26.58 26.65-6.42 29.5 2.35 52.62 7.11 2.53-.02 4.82-72.89 4.82-72.89l4.76 97.28 3.97-24.44 20.45-.22c1.31-.02 14.41-14.22 15.68-14.07 1.32.15 6.7 14.08 7.95 14.07 2.29-.03 33.32.04 35.76.02.95 0 5-8.5 5.53-8.54.58-.04 6.1 8.52 7.1 8.52 3.66 0 9.3.06 10.72.05 2.53-.02 4.81-72.89 4.81-72.89l4.77 97.28 3.97-24.44 20.45-.23c1.31-.01 14.4-14.22 15.68-14.07 1.32.16 6.69 14.09 7.94 14.07"
+        />
+      </svg>
+    </div>
+
+    <!--Background Loader Script-->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var loader = document.getElementById("loader");
+
+        // Show loader initially
+        loader.style.display = "flex";
+
+        // Hide loader after timeout (e.g., 3 seconds)
+        var timeout = 4000;
+        setTimeout(function () {
+          loader.style.display = "none";
+        }, timeout);
+      });
+    </script>
+
+    <!--Background-->
+    <canvas id="canvas"> </canvas>
+
+    <!-- Pop-up message -->
+    <div id="popup" class="popup-hidden">
+      <h2 style="color: #e00000;"></h2>
+      <br />
+      <p></p>
+    </div>
+
+    <audio id="song" autoplay loop>
+      <source src="./My Love Mine All Mine - Sped up - Mitski.mp3" type="audio/mpeg">
+      <!-- Your browser does not support the audio element. -->
+    </audio>
+    
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.getElementById("song").play();
+      });
+    </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var loader = document.getElementById("loader");
+
+        // Show loader initially
+        loader.style.display = "flex";
+
+        // Hide loader after timeout (e.g., 3 seconds)
+        var timeout = 4000;
+        setTimeout(function () {
+          loader.style.display = "none";
+          // Show pop-up message
+          var popup = document.getElementById("popup");
+          popup.classList.add("show-popup");
+          typeMessage();
+        }, timeout);
+      });
+
+      function typeMessage() {
+        var heading = document.querySelector("#popup h2");
+        var paragraph = document.querySelector("#popup p");
+        var message1 = "Happy Valentine's Day!";
+        var message2 = "Wishing you a day filled with love and happiness.";
+
+        typeHeading(heading, message1, 0);
+        setTimeout(function () {
+          typeParagraph(paragraph, message2, 0);
+        }, message1.length * 100); // Adjust the delay as needed
+      }
+
+      function typeHeading(element, message, index) {
+        if (index < message.length) {
+          element.textContent += message.charAt(index);
+          index++;
+          setTimeout(function () {
+            typeHeading(element, message, index);
+          }, 100); // Adjust the typing speed as needed
+        }
+      }
+
+      function typeParagraph(element, message, index) {
+        if (index < message.length) {
+          element.textContent += message.charAt(index);
+          index++;
+          setTimeout(function () {
+            typeParagraph(element, message, index);
+          }, 100); // Adjust the typing speed as needed
+        }
+      }
+    </script>
+
+    <!--Backgroud Scripts  -->
+    <script>
+      let range = (n) => Array.from(Array(n).keys());
+
+      class Vector {
+        constructor(x = 0, y = 0) {
+          this.x = x;
+          this.y = y;
+        }
+
+        reflect() {
+          return new Vector(-this.x, -this.y);
+        }
+
+        add(vector) {
+          return new Vector(this.x + vector.x, this.y + vector.y);
+        }
+
+        subtract(vector) {
+          return new Vector(this.x - vector.x, this.y - vector.y);
+        }
+
+        scale(scalar = 1) {
+          return new Vector(this.x * scalar, this.y * scalar);
+        }
+
+        length() {
+          return Math.sqrt(this.x * this.x + this.y * this.y);
+        }
+
+        distance(vector) {
+          let dx = this.x - vector.x;
+          let dy = this.y - vector.y;
+
+          return Math.sqrt(dx * dx + dy * dy);
+        }
+      }
+
+      class IO {
+        constructor() {
+          this.mouse = new Vector();
+          this.bindMouse();
+        }
+
+        bindMouse() {
+          window.addEventListener("mousemove", ({ x, y }) => {
+            this.mouse.x = x;
+            this.mouse.y = y;
+          });
+        }
+      }
+
+      class Point {
+        constructor({ position = new Vector(), color = "#f00", size = 3 }) {
+          this.position = position;
+          this.color = color;
+          this.size = size;
+        }
+
+        render(ctx) {
+          ctx.beginPath();
+
+          ctx.fillStyle = this.color;
+          ctx.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI);
+          ctx.fill();
+
+          ctx.closePath();
+        }
+      }
+
+      class SpringPoint extends Point {
+        constructor({
+          target = new Vector(),
+          elasticity = 1e-1,
+          color = "rgba(255, 0, 0, .6)",
+          size = 3,
+          damping = 1e-1,
+        }) {
+          super({ position: target, color, size });
+          this.velocity = new Vector();
+          this.target = target;
+          this.elasticity = elasticity;
+          this.damping = damping;
+        }
+
+        updateVelocity() {
+          let damping = this.velocity.scale(this.damping);
+          let force = this.target
+            .subtract(this.position)
+            .scale(this.elasticity)
+            .subtract(damping);
+
+          this.velocity = this.velocity.add(force);
+        }
+
+        updatePosition() {
+          this.position = this.position.add(this.velocity);
+        }
+
+        update() {
+          this.updatePosition();
+          this.updateVelocity();
+        }
+      }
+
+      class SpringTrail extends SpringPoint {
+        constructor(config) {
+          super(config);
+          this.trail = range(config.trailSize || 10).map((index) => {
+            config.target = this.position;
+            config.elasticity = 1 / (index * 8);
+            config.damping = 8 / (index * 10 + 5);
+            return new SpringPoint(config);
+          });
+        }
+
+        update() {
+          super.update();
+          this.trail.forEach((point) => point.update());
+        }
+
+        render(ctx) {
+          super.render(ctx);
+          this.trail.forEach((point) => point.render(ctx));
+        }
+      }
+
+      class Physics {
+        update(objects) {
+          objects.forEach((object) => object.update());
+        }
+      }
+
+      class Renderer {
+        constructor(ctx, size = { width: 100, height: 100 }) {
+          this.ctx = ctx;
+          this.size = size;
+        }
+
+        render(objects) {
+          objects.forEach((object) => object.render(ctx));
+        }
+
+        clear() {
+          this.ctx.fillStyle = "rgba(0, 0, 0, .2)";
+          this.ctx.fillRect(0, 0, this.size.width, this.size.height);
+        }
+      }
+
+      class Engine {
+        constructor(physics, renderer, objects = []) {
+          this.physics = physics;
+          this.renderer = renderer;
+          this.objects = objects;
+        }
+
+        add(...objects) {
+          this.objects = this.objects.concat(objects);
+        }
+
+        tick() {
+          this.physics.update(this.objects);
+        }
+
+        render() {
+          this.renderer.render(this.objects);
+        }
+
+        clear() {
+          this.renderer.clear();
+        }
+      }
+
+      let canvas = document.getElementById("canvas");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      let ctx = canvas.getContext("2d");
+
+      let io = new IO();
+      let engine = new Engine(
+        new Physics(),
+        new Renderer(ctx, { width: canvas.width, height: canvas.height })
+      );
+
+      let origin = new Vector(canvas.width / 2, canvas.height / 2);
+
+      // This  is what generates the shape
+      let polar = (rad, time) => {
+        rad += Math.sin(time / 100);
+        let x = 16 * Math.sin(rad) ** 3;
+        let y =
+          13 * Math.cos(rad) -
+          5 * Math.cos(2 * rad) -
+          2 * Math.cos(3 * rad) -
+          Math.cos(4 * rad);
+        let scale = (Math.sin(time / 10) + 3) * 4;
+        return new Vector(x * scale, -y * scale).add(
+          origin.add(io.mouse.subtract(origin).scale(0.5))
+        );
+      };
+
+      let random = (min = 0, max = 1) => Math.random() * (max - min) + min;
+
+      let targetsSize = 60;
+
+      // Creating the points for the shape
+      let targets = [];
+      for (let i = 0; i < targetsSize; i++) {
+        let target = new Vector(
+          random(0, canvas.width),
+          random(0, canvas.height)
+        );
+        engine.add(
+          new SpringTrail({
+            target: target,
+            size: 1.3,
+            trailSize: 10,
+            color: "rgba(230, 10, 40, 0.8)",
+          })
+        );
+        targets.push(target);
+      }
+
+      let time = 0;
+      (function animate() {
+        time++;
+        engine.clear();
+        engine.tick();
+        engine.render();
+
+        updateTargets();
+
+        window.requestAnimationFrame(animate);
+      })();
+
+      // Applying the shape to the target points
+      function updateTargets() {
+        for (let i = 0; i < targetsSize; i++) {
+          let lerp = (i / (targetsSize - 1)) * Math.PI * 2 + random() / 10;
+          let result = polar(lerp, time);
+          targets[i].x = result.x;
+          targets[i].y = result.y;
+
+          // Randomly swap two points
+          if (random() < 0.004) {
+            let rnd1 = Math.floor(random(0, targets.length));
+            let rnd2 = Math.floor(random(0, targets.length));
+            [targets[rnd1], targets[rnd2]] = [targets[rnd2], targets[rnd1]];
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
