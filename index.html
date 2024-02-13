@@ -213,17 +213,17 @@
       <p></p>
     </div>
 
-    <audio id="song" autoplay loop>
-      <source src="./My Love Mine All Mine - Sped up - Mitski.mp3" type="audio/mpeg">
-      <!-- Your browser does not support the audio element. -->
+    <audio id="song">
+        <source src="My Love Mine All Mine - Sped up - Mitski.mp3">
     </audio>
-    
+
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        document.getElementById("song").play();
-      });
+        window.addEventListener('click', ()=> {
+            document.getElementById("song").play();
+        });
     </script>
+  
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
